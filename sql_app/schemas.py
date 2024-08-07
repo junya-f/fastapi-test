@@ -1,27 +1,34 @@
 import datetime
 from pydantic import BaseModel, Field
 
-#users
-
-class CreateUser(UserBase):
-    user_id: int
+#user
+class CreateUser(BaseModel):
     email: str
     username: str = Field(max_length=12)
+    hashed_password: str
     
-class ReadUser(Usercreate):
+class User(CreateUser):
+    user_id: int
     
+    class Config:
+        orm_mode = True
     
 #todo_lisus
-class TodoBase(BaseModel):
-    title: str
+class CreateTodo(BaseModel):
+    user_id: int
+    title_id: int
     content: str
-    
-class CreateTodo(TodoBase):
-    todo_id: int
     completed: bool
+    start_datetime: datetime.datetime
+    end_datetime: datetime.datetime
     
-class ReadTodo
+class Todo(CreateTodo):
+    todo_id: int
 
-class UpdateTodo
+class UpdateTodo():
+    pass
+
+    class Config:
+        orm_mode = True
     
     

@@ -16,7 +16,7 @@ class User(CreateUser):
 #todo_lisus
 class CreateTodo(BaseModel):
     user_id: int
-    title_id: int
+    title: str
     content: str
     completed: bool
     start_datetime: datetime.datetime
@@ -25,7 +25,7 @@ class CreateTodo(BaseModel):
 class Todo(CreateTodo):
     todo_id: int
 
-class UpdateTodo():
+class UpdateTodo(Todo):
     pass
 
     class Config:

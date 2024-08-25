@@ -27,6 +27,24 @@ def create_todo_lists(db: Session, todo_lists: schemas.CreateTodo):
     db.commit()
     db.refresh(db_todo_lists)
     return db_todo_lists
+
 #todoリスト更新
+def update_todo_lists(db: Session, todo_id: int, todo_update: schemas.UpdateTodo):
+    todo = db.query(models.Todo_list).filter(models.Todo_list.todo_id == todo_id).first()
+    if not todo:
+        return None
+    todo_data = todo_update.dict(exclude_unset=True)
+    for key, value in todo_data.items():
+        setattr(todo, key, value)
+    db.commit()
+    db.refresh(todo)
+    return todo
 
 #todoリストの削除
+def deleate_todo(db: Session, todo_id: int):
+    todo = db.query(models.Todo_list).filter(models.Todo_list.todo_id == todo_id).first() 
+    if not todo:
+        return None
+    db.deleate(todo)
+    db.commit()
+    return todo

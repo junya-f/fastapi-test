@@ -1,11 +1,12 @@
 import datetime
 from pydantic import BaseModel, Field
+from typing import List
 
 #user
 class CreateUser(BaseModel):
     email: str
-    username: str = Field(max_length=12)
-    hashed_password: str
+    user_name: str = Field(max_length=12)
+    password: str
     
 class User(CreateUser):
     user_id: int
@@ -13,22 +14,32 @@ class User(CreateUser):
     class Config:
         orm_mode = True
     
-#todo_lisus
-class CreateTodo(BaseModel):
-    user_id: int
+#todo_lists
+class TodoListBase(BaseModel):
     title: str
-    content: str
-    completed: bool
-    start_datetime: datetime.datetime
-    end_datetime: datetime.datetime
-    
-class Todo(CreateTodo):
-    todo_id: int
 
-class UpdateTodo(Todo):
+class CreateTodoList(TodoListBase):
     pass
 
+class TodoList(TodoListBase):
+    id: int
+    owner_id: int
+    items: List["TodoItem"] = []
+    
+    class Config:
+        orm_mode = True   
+ 
+#todo_items
+class TodoItemBase(BaseModel):
+    content: str
+    completed: bool = False
+
+class CreateTodoItem(TodoItemBase):
+    pass
+
+class TodoItem(TodoItemBase):
+    id: int
+    todo_list_id: int
+    
     class Config:
         orm_mode = True
-    
-    

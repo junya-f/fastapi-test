@@ -9,8 +9,8 @@ def get_user(db: Session, user_id: int):
 
 #user登録
 def create_user(db: Session, user: schemas.CreateUser):
-    fake_hashed_password = user.hashed_password + "notreallyhashed"
-    db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
+    hashed_password = user.password + "notreallyhashed"
+    db_user = models.User(email=user.email, hashed_password=hashed_password)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -41,10 +41,10 @@ def update_todo_lists(db: Session, todo_id: int, todo_update: schemas.UpdateTodo
     return todo
 
 #todoリストの削除
-def deleate_todo(db: Session, todo_id: int):
+def delete_todo(db: Session, todo_id: int):
     todo = db.query(models.Todo_list).filter(models.Todo_list.todo_id == todo_id).first() 
     if not todo:
         return None
-    db.deleate(todo)
+    db.delete(todo)
     db.commit()
     return todo
